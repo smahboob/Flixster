@@ -48,23 +48,24 @@ public class MainActivity extends AppCompatActivity {
         // Request a string response from the provided URL.
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, NOW_PLAYING_URL,null,
             //success
-            (Response.Listener<JSONObject>) response -> {
+            response -> {
                 try {
                     JSONArray jsonArray = response.getJSONArray("results");
-                    now_playing_list = Movie.getMovies(jsonArray);
+                    now_playing_list.addAll(Movie.getMovies(jsonArray));
+                    //movieAdapter.notifyDataSetChanged();
                     renderData();
                 }
                 catch (JSONException e) { e.printStackTrace();}
             },
             //error
-            (Response.ErrorListener) error -> { error.printStackTrace(); }
-            );
+            error -> { error.printStackTrace(); }
+        );
 
         mQueue.add(jsonObjectRequest);
     }
 
     public void renderData(){
-        movieAdapter = new RecyclerAdapter(now_playing_list);
+        movieAdapter = new RecyclerAdapter(this,now_playing_list);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
