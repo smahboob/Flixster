@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.flixster.adapter.RecyclerAdapter;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.android.flixster.models.Movie;
@@ -40,8 +42,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.movie_recycler_view);
         mQueue = Volley.newRequestQueue(this);
         now_playing_list = new ArrayList<>();
-
         fetchData();
+
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Log.d("TAG   ", "portrait");
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.d("TAG  ", "landscape");
+        }
+
     }
 
     public void fetchData(){
@@ -65,7 +74,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void renderData(){
-        movieAdapter = new RecyclerAdapter(this,now_playing_list);
+
+        boolean portrait = true;
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            portrait = false;
+        }
+
+        movieAdapter = new RecyclerAdapter(this,now_playing_list, portrait);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -21,10 +21,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     List<Movie> movieList;
     Context context;
+    boolean portrait;
 
-    public RecyclerAdapter(Context context, List<Movie> movies) {
+    public RecyclerAdapter(Context context, List<Movie> movies, boolean portrait) {
         this.context = context;
         this.movieList = movies;
+        this.portrait = portrait;
     }
 
     @NonNull
@@ -62,7 +64,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
 
         public void bind(Movie movieItem) {
-            Glide.with(context).load(movieItem.getPoster_path()).into(image);
+            if (portrait) {
+                Glide.with(context).load(movieItem.getPoster_path()).into(image);
+            } else {
+                Glide.with(context).load(movieItem.getBackdrop_path()).into(image);
+            }
             title_view.setText(movieItem.getTitle());
             overview_view.setText(movieItem.getOverview());
         }

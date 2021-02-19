@@ -51,6 +51,6 @@ public class Movie {
         return vote_average;
     }
     public String getBackdrop_path() {
-        return backdrop_path;
+        return String.format("https://image.tmdb.org/t/p/w342/%s",backdrop_path);
     }
 }
