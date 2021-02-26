@@ -1,8 +1,10 @@
-package com.android.flixster;
+package com.android.flixster.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.flixster.R;
 import com.android.flixster.adapter.RecyclerAdapter;
 
 import android.content.res.Configuration;
@@ -43,14 +45,6 @@ public class MainActivity extends AppCompatActivity {
         mQueue = Volley.newRequestQueue(this);
         now_playing_list = new ArrayList<>();
         fetchData();
-
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Log.d("TAG   ", "portrait");
-        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.d("TAG  ", "landscape");
-        }
-
     }
 
     public void fetchData(){
