@@ -26,6 +26,7 @@ public class Detailed_Activity extends YouTubeBaseActivity {
 
     String youtube_video_key;
     YouTubePlayerView youTubePlayerView;
+    boolean popular = false;
     public static  final String VIDEO_URL = "https://api.themoviedb.org/3/movie/%d/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
     @Override
@@ -33,7 +34,10 @@ public class Detailed_Activity extends YouTubeBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
 
-        Movie movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra("movieObject"));
+        Movie movie = Parcels.unwrap(getIntent().getParcelableExtra("movieObject"));
+        if(movie.getVote_average() >= 5){
+            popular = true;
+        }
 
         TextView titleDisplay = findViewById(R.id.moveTitleDetailedText);
         TextView overViewDisplay = findViewById(R.id.overviewDetailedText);
@@ -44,8 +48,7 @@ public class Detailed_Activity extends YouTubeBaseActivity {
         titleDisplay.setText(movie.getTitle());
         releaseDate.setText(movie.getRelease_date());
         overViewDisplay.setText(movie.getOverview());
-        ratingBar.setRating(Float.parseFloat(movie.getVote_average()));
-
+        ratingBar.setRating((float)movie.getVote_average());
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(String.format(VIDEO_URL,movie.getId()), new JsonHttpResponseHandler() {
@@ -78,6 +81,10 @@ public class Detailed_Activity extends YouTubeBaseActivity {
             public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                 YouTubePlayer youTubePlayer, boolean b) {
                 youTubePlayer.cueVideo(youtube_video_key);
+                if(popular){
+                    youTubePlayer.loadVideo(youtube_video_key);
+                    youTubePlayer.play();
+                }
             }
 
             @Override
@@ -87,6 +94,5 @@ public class Detailed_Activity extends YouTubeBaseActivity {
             }
         });
     }
-
 
 }

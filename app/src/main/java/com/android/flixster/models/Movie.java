@@ -16,7 +16,7 @@ public class Movie {
     String poster_path;
     String overview;
     String release_date;
-    String vote_average;
+    double vote_average;
     String backdrop_path;
 
     public Movie(JSONObject jsonObject) throws JSONException {
@@ -25,7 +25,7 @@ public class Movie {
         poster_path = jsonObject.getString("poster_path");
         overview = jsonObject.getString("overview");
         release_date = jsonObject.getString("release_date");
-        vote_average = jsonObject.getString("vote_average");
+        vote_average = jsonObject.getDouble("vote_average");
         backdrop_path = jsonObject.getString("backdrop_path");
     }
 
@@ -57,7 +57,7 @@ public class Movie {
     public String getRelease_date() {
         return release_date;
     }
-    public String getVote_average() {
+    public double getVote_average() {
         return vote_average;
     }
     public String getBackdrop_path() {
